@@ -50,24 +50,6 @@ export default function Home() {
         </section>
 
       </main>
-
-      {/* FOOTER */}
-      <footer className="border-t border-slate-800 bg-slate-950 py-8">
-        <div className="max-w-5xl mx-auto px-6 flex justify-between items-center text-sm text-slate-500">
-          <div>
-            <strong>MODEL STATUS:</strong> v1.0.0-final FROZEN
-            <span className="mx-4">|</span>
-            Features: 5
-            <span className="mx-4">|</span>
-            CI: <span className="text-green-500">PASS</span>
-          </div>
-          <div className="flex gap-4">
-            <Link href="/methodology" className="hover:text-slate-300">Methodology</Link>
-            <Link href="/reproduction" className="hover:text-slate-300">Reproduction Contract</Link>
-            <a href="https://github.com/shambhushekharsinha-engg/pumpfun-zero-block-deconstruction" target="_blank" className="hover:text-slate-300">GitHub</a>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
