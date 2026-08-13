@@ -12,7 +12,7 @@ export default function Fingerprint() {
       <FadeIn>
         <h1 className="text-4xl md:text-5xl font-black mb-4 tracking-tight">The Behavioral <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Fingerprint</span></h1>
         <p className="text-xl text-slate-400 mb-20 max-w-2xl leading-relaxed">
-          Our machine learning model isolated the exact decision boundaries defining the target's dominant observable regime.
+          Our machine learning model isolated the exact decision boundaries defining the target&apos;s dominant observable regime.
         </p>
       </FadeIn>
 

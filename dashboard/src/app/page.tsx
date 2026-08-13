@@ -19,11 +19,11 @@ export default function Home() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
             </span>
-            MODEL v1.0.0-final (FROZEN)
+            MODEL v1.1.0-final (FROZEN)
           </div>
           
           <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tight text-white leading-tight drop-shadow-lg">
-            Reconstructing a Sniper's <br className="hidden md:block"/>
+            Reconstructing a Sniper&apos;s <br className="hidden md:block"/>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-emerald-400 drop-shadow-sm">
               Observable Decision Policy
             </span>

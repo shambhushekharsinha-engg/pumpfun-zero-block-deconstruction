@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Activity, Zap, ShieldCheck, AlertTriangle } from "lucide-react";
+import { Zap, ShieldCheck, AlertTriangle } from "lucide-react";
 
 export function PolicyExplorer() {
   const [features, setFeatures] = useState({

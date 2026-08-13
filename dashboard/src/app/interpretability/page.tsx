@@ -127,7 +127,7 @@ export default function Interpretability() {
           <h2 className="text-2xl font-bold mb-4 flex items-center gap-3"><HelpCircle className="text-slate-500" /> The Residual Regime</h2>
           <div className="bg-slate-900/40 backdrop-blur border border-slate-700/50 rounded-3xl p-8 md:p-12 shadow-xl">
             <p className="text-slate-400 mb-10 text-center max-w-2xl mx-auto leading-relaxed">
-              The replica successfully reconstructs the dominant observable regime, but cannot fully explain the target's residual selections based solely on the supplied features.
+              The replica successfully reconstructs the dominant observable regime, but cannot fully explain the target&apos;s residual selections based solely on the supplied features.
             </p>
 
             <div className="flex flex-col md:flex-row gap-6 justify-center items-stretch text-center mb-12">
