@@ -1,4 +1,4 @@
-import PolicyExplorer from "@/components/PolicyExplorer";
+import { PolicyExplorer } from "@/components/PolicyExplorer";
 import EvidenceBadge from "@/components/EvidenceBadge";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/FadeIn";
 import Link from "next/link";
