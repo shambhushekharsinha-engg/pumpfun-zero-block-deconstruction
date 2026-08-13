@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/FadeIn";
-import { CheckCircle2, FileText, Github, FileLock2, ShieldAlert } from "lucide-react";
+import { CheckCircle2, FileText, Code, FileLock2, ShieldAlert } from "lucide-react";
 
 export default function Reproduction() {
   return (
@@ -80,7 +80,7 @@ export default function Reproduction() {
           <StaggerItem>
             <a href="https://github.com/shambhushekharsinha-engg/pumpfun-zero-block-deconstruction" target="_blank" rel="noopener noreferrer" className="block p-8 bg-slate-900/40 backdrop-blur border border-slate-700/50 hover:border-blue-500/50 rounded-2xl transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] hover:-translate-y-1 group">
               <div className="flex items-center gap-3 font-black text-white mb-3 text-lg group-hover:text-blue-400 transition-colors">
-                <Github size={24}/> GitHub Repository
+                <Code size={24}/> GitHub Repository
               </div>
               <p className="text-slate-400 leading-relaxed">Complete source code, CI pipelines, automated tests, and frozen model artifacts.</p>
             </a>

@@ -1,5 +1,5 @@
-import { PolicyExplorer } from "@/components/PolicyExplorer";
-import { EvidenceBadge } from "@/components/EvidenceBadge";
+import PolicyExplorer from "@/components/PolicyExplorer";
+import EvidenceBadge from "@/components/EvidenceBadge";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/FadeIn";
 import Link from "next/link";
 import { ArrowRight, ShieldCheck, Zap, Activity } from "lucide-react";
@@ -100,10 +100,10 @@ export default function Home() {
               </div>
 
               <div className="space-y-4 relative z-10">
-                <EvidenceBadge title="Point-in-Time Features" status="observable" />
-                <EvidenceBadge title="Target's Purchase Events" status="observable" />
-                <EvidenceBadge title="Target's Exit Timing" status="unobservable" />
-                <EvidenceBadge title="Target's True Profitability" status="unobservable" />
+                <EvidenceBadge title="Point-in-Time Features" status="observable" description="Raw on-chain telemetry available prior to deployment." />
+                <EvidenceBadge title="Target's Purchase Events" status="observable" description="Known selections extracted from the target's public wallet." />
+                <EvidenceBadge title="Target's Exit Timing" status="unobservable" description="We cannot predict when the target will sell." />
+                <EvidenceBadge title="Target's True Profitability" status="unobservable" description="Latency and MEV obscure the true P&L." />
               </div>
             </div>
           </FadeIn>
