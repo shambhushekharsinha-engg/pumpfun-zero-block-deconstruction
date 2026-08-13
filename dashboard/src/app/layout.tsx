@@ -35,7 +35,7 @@ export default function RootLayout({
         <Navigation />
 
         {/* MAIN CONTENT */}
-        <div className="flex-1">
+        <div className="flex-1 pt-16">
           {children}
         </div>
 
@@ -43,7 +43,7 @@ export default function RootLayout({
         <footer className="border-t border-slate-800 bg-slate-950 py-12 mt-auto">
           <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-sm text-slate-500">
             <div className="flex items-center gap-4 mb-4 md:mb-0">
-              <span className="px-2 py-1 bg-blue-900/30 text-blue-400 border border-blue-800/50 rounded font-mono text-xs">v1.0.0-final</span>
+              <span className="px-2 py-1 bg-blue-900/30 text-blue-400 border border-blue-800/50 rounded font-mono text-xs">v1.1.1-final</span>
               <span className="font-semibold text-slate-400">MODEL STATUS: FROZEN</span>
               <span className="hidden md:inline">|</span>
               <span className="hidden md:inline">Features: 5</span>

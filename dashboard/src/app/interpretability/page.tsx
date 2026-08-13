@@ -6,7 +6,7 @@ import { ShieldCheck, Crosshair, HelpCircle } from "lucide-react";
 
 export default function Interpretability() {
   return (
-    <div className="max-w-5xl mx-auto px-6 py-20 relative">
+    <div key="interpretability-page" className="max-w-5xl mx-auto px-6 py-20 relative">
       <div className="absolute top-1/4 right-0 w-96 h-96 bg-purple-600/10 rounded-full blur-[120px] pointer-events-none"></div>
 
       <FadeIn>
@@ -63,7 +63,7 @@ export default function Interpretability() {
       <section className="mb-24">
         <FadeIn delay={0.2}>
           <h2 className="text-2xl font-bold mb-4 flex items-center gap-3"><Crosshair className="text-purple-500" /> Ablation & Model Comparison (PR-AUC)</h2>
-          <p className="text-slate-400 mb-10 leading-relaxed max-w-3xl">
+          <p className="text-slate-200 font-medium mb-10 leading-relaxed max-w-3xl">
             The model operates substantially above the 4.67% prevalence baseline, and its strongest generalization result occurs on completely unseen deployers.
           </p>
           
@@ -126,7 +126,7 @@ export default function Interpretability() {
         <FadeIn delay={0.3}>
           <h2 className="text-2xl font-bold mb-4 flex items-center gap-3"><HelpCircle className="text-slate-500" /> The Residual Regime</h2>
           <div className="bg-slate-900/40 backdrop-blur border border-slate-700/50 rounded-3xl p-8 md:p-12 shadow-xl">
-            <p className="text-slate-400 mb-10 text-center max-w-2xl mx-auto leading-relaxed">
+            <p className="text-slate-200 font-medium mb-10 text-center max-w-2xl mx-auto leading-relaxed">
               The replica successfully reconstructs the dominant observable regime, but cannot fully explain the target&apos;s residual selections based solely on the supplied features.
             </p>
 

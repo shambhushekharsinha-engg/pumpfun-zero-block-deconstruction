@@ -6,7 +6,7 @@ import { CheckCircle2, FileText, Code, FileLock2, ShieldAlert } from "lucide-rea
 
 export default function Reproduction() {
   return (
-    <div className="max-w-5xl mx-auto px-6 py-20 relative">
+    <div key="reproduction-page" className="max-w-5xl mx-auto px-6 py-20 relative">
       <div className="absolute top-1/3 left-0 w-96 h-96 bg-emerald-600/10 rounded-full blur-[120px] pointer-events-none"></div>
 
       <FadeIn>
