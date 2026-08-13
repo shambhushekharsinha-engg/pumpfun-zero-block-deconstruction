@@ -97,7 +97,7 @@ jobs:
             "1.0000.*PR-AUC"
           )
           FAILED=0
-          EXCLUDE_DIRS="--exclude-dir=.git --exclude-dir=node_modules --exclude-dir=.next --exclude-dir=archive"
+          EXCLUDE_DIRS="--exclude-dir=.git --exclude-dir=node_modules --exclude-dir=.next --exclude-dir=archive --exclude-dir=.github"
           for pattern in "${FORBIDDEN_PATTERNS[@]}"; do
             results=$(grep -rI $EXCLUDE_DIRS -l "$pattern" . 2>/dev/null || true)
             if [ -n "$results" ]; then
