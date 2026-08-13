@@ -1,0 +1,25 @@
+Model-derived behavioral rules (Not the actual bot source code):
+Class 1 = Bot selected, Class 0 = Not selected
+
+|--- past_launches <= 70.50
+|   |--- past_launches <= 22.50
+|   |   |--- past_launches <= 6.50
+|   |   |   |--- class: 1
+|   |   |--- past_launches >  6.50
+|   |   |   |--- class: 1
+|   |--- past_launches >  22.50
+|   |   |--- deployer_age_seconds <= 609527.50
+|   |   |   |--- class: 0
+|   |   |--- deployer_age_seconds >  609527.50
+|   |   |   |--- class: 1
+|--- past_launches >  70.50
+|   |--- past_buys <= 2068.50
+|   |   |--- deployer_age_seconds <= 3868485.00
+|   |   |   |--- class: 0
+|   |   |--- deployer_age_seconds >  3868485.00
+|   |   |   |--- class: 0
+|   |--- past_buys >  2068.50
+|   |   |--- past_burns <= 505.00
+|   |   |   |--- class: 1
+|   |   |--- past_burns >  505.00
+|   |   |   |--- class: 1

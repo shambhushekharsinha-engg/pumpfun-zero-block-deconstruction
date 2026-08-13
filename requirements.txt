@@ -1,8 +1,0 @@
-numpy
-polars
-matplotlib
-seaborn
-lightgbm
-shap
-scikit-learn
-notebook

@@ -1,4 +1,4 @@
-name: CI Tests
+name: Submission Integrity Gate
 
 on:
   push:
@@ -7,22 +7,122 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  scientific-tests:
+    name: Scientific Pipeline Tests
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
-        
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r submission/requirements.txt
-        pip install pytest
-        
-    - name: Run Schema, Temporal, and Leakage Tests
-      run: |
-        pytest submission/tests/
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest numpy
+
+      - name: Run Scientific Integrity Tests
+        run: |
+          pytest submission/tests/ -v
+
+  dashboard-inference-tests:
+    name: Dashboard Golden Inference Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest numpy
+
+      - name: Run Dashboard Golden Inference Tests
+        run: |
+          pytest dashboard/tests/ -v
+
+  dashboard-build:
+    name: Dashboard Frontend Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: dashboard
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: dashboard/package-lock.json
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint || true
+
+      - name: Build production bundle
+        run: npm run build
+
+  honesty-scan:
+    name: Forbidden Claims Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Scan for forbidden economic claims
+        run: |
+          echo "=== Scanning for forbidden claims in documentation ==="
+          FORBIDDEN_PATTERNS=(
+            "83.92 SOL"
+            "38.55%"
+            "2.10x"
+            "2.10×"
+            "0.1499 SOL"
+            "0.1498 SOL"
+            "100% zero-block"
+            "100% of its trades"
+            "equity curve"
+            "simulated P&L"
+            "99.41%"
+            "PR-AUC.*1.0000"
+            "1.0000.*PR-AUC"
+          )
+          FAILED=0
+          EXCLUDE_DIRS="--exclude-dir=.git --exclude-dir=node_modules --exclude-dir=.next --exclude-dir=archive"
+          for pattern in "${FORBIDDEN_PATTERNS[@]}"; do
+            results=$(grep -rI $EXCLUDE_DIRS -l "$pattern" . 2>/dev/null || true)
+            if [ -n "$results" ]; then
+              echo "FAIL: Forbidden claim '$pattern' found in:"
+              echo "$results"
+              FAILED=1
+            fi
+          done
+          if [ $FAILED -eq 1 ]; then
+            echo "Honesty scan FAILED — contradictory claims detected."
+            exit 1
+          else
+            echo "Honesty scan PASSED — no forbidden claims found."
+          fi
+
+      - name: Scan for absolute paths and secrets
+        run: |
+          echo "=== Scanning for absolute paths and secrets ==="
+          FAILED=0
+          EXCLUDE_DIRS="--exclude-dir=.git --exclude-dir=node_modules --exclude-dir=.next --exclude-dir=archive"
+          SECRET_PATTERNS=("API_KEY" "SECRET_KEY" "PRIVATE_KEY" "C:\\\\\\\\Users" "/home/" "/Users/")
+          for pattern in "${SECRET_PATTERNS[@]}"; do
+            results=$(grep -rI $EXCLUDE_DIRS -l "$pattern" . 2>/dev/null || true)
+            if [ -n "$results" ]; then
+              echo "WARNING: Pattern '$pattern' found in: $results"
+            fi
+          done
+          echo "Secrets scan complete."

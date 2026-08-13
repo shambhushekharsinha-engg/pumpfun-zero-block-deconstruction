@@ -1,0 +1,10 @@
+Feature,1,2,3
+deployer_age_seconds,1.0,1.0,1.0
+gas_native,8.0,8.0,8.0
+past_burns,5.0,5.0,5.0
+past_buys,4.0,4.0,4.0
+past_launches,2.0,2.0,2.0
+past_sells,3.0,3.0,3.0
+priority_fee,8.0,8.0,8.0
+tip_fee,8.0,8.0,8.0
+token_total_supply,6.0,6.0,6.0

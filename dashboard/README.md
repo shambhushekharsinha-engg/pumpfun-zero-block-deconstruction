@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Zero-Block Deconstruction — Dashboard
 
-## Getting Started
+The interactive research presentation layer for the Zero-Block Deconstruction project.
 
-First, run the development server:
+## Purpose
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+This Next.js application serves as the **research artifact dashboard** for the Kaggle competition submission. It allows judges and reviewers to:
+
+- Explore the dominant behavioral fingerprint identified by the model
+- Simulate the frozen replica's decisions using a real-time inference engine
+- Understand the scientific methodology, evidence boundaries, and reproducibility contract
+
+## Architecture
+
+```
+dashboard/
+├── src/app/                # Next.js App Router pages
+│   ├── page.tsx            # Homepage: Policy Explorer + Evidence Summary
+│   ├── methodology/        # Leakage firewall & point-in-time construction
+│   ├── fingerprint/        # SHAP-derived behavioral fingerprint
+│   ├── interpretability/   # PR-AUC, class imbalance, model evaluation
+│   └── reproduction/       # Scientific reproduction contract
+├── src/components/
+│   ├── PolicyExplorer.tsx  # Real-time debounced inference simulator
+│   ├── Navigation.tsx      # Responsive frosted-glass header
+│   ├── FadeIn.tsx          # Framer Motion stagger wrappers
+│   └── EvidenceBadge.tsx   # Observable/unobservable evidence markers
+├── api/
+│   └── predict.py          # Dependency-free AST-transpiled LightGBM scorer
+├── model/
+│   ├── feature_schema.json # Frozen feature order (5 causal-in-time features)
+│   ├── threshold.json      # Validation-selected operating threshold (0.793)
+│   └── golden_predictions.json  # Golden inference set for CI verification
+└── tests/
+    └── inference_equivalence/
+        └── test_scorer.py  # Golden inference + feature order verification
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Frozen Inference Contract
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The dashboard's `/api/predict` endpoint enforces a strict contract:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Property | Value |
+|---|---|
+| **Model** | LightGBM (transpiled to pure Python AST via m2cgen) |
+| **Input Features** | 5 causal-in-time features (see `model/feature_schema.json`) |
+| **Threshold** | 0.793 (selected on validation set only) |
+| **Dependencies** | Zero (no pandas, numpy, scikit-learn, or lightgbm) |
+| **No Training** | Model is frozen. No learning occurs at inference time. |
+| **No Economic Prediction** | Realized P&L is not observable from the dataset. |
+| **Version** | v1.1.0-final |
 
-## Learn More
+## Local Development
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+# Install dependencies
+npm install
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Start development server (Next.js + Python API routing)
+npm run dev
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Visit http://localhost:3000
+```
 
-## Deploy on Vercel
+## Running Tests
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+# Dashboard golden inference test (requires Python + numpy)
+pytest tests/ -v
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Production build verification
+npm run build
+```
+
+## Scientific Limitations
+
+This dashboard is a **research presentation tool**, not a live trading system.
+
+- The model is frozen. Adjust sliders to explore existing learned behavior.
+- All observable signals are point-in-time on-chain features only.
+- The simulator does not predict economic outcomes (P&L, entry size, exit timing).
+- The classification threshold (0.793) was selected on the validation set before the test set was ever examined.

@@ -1,0 +1,47 @@
+{
+  "experiment_version": "v1.1.0-final",
+  "dataset": {
+    "total_eligible_deployments": 411137,
+    "mapped_positive_labels": 13818,
+    "unknown_positive_labels": 2109,
+    "confirmed_negative_labels": 395210,
+    "unknown_treatment": "EXCLUDED — Unknown is not Negative",
+    "frozen": true
+  },
+  "features": [
+    "past_launches",
+    "past_buys",
+    "past_sells",
+    "past_burns",
+    "deployer_age_seconds"
+  ],
+  "feature_engineering": "point-in-time causal-in-time aggregation at t_decision. No look-ahead. No future events.",
+  "split": {
+    "strategy": "chronological",
+    "train": 0.70,
+    "validation": 0.15,
+    "test": 0.15
+  },
+  "model": {
+    "name": "LightGBM",
+    "transpiled_to": "pure Python AST via m2cgen for serverless deployment"
+  },
+  "policy": {
+    "name": "top_5_percent",
+    "threshold": 0.793,
+    "threshold_source": "validation_set_only",
+    "test_tuning": false
+  },
+  "test_metrics": {
+    "pr_auc": 0.286104,
+    "unseen_deployer_pr_auc": 0.396,
+    "recall_at_top5pct": 0.478,
+    "precision_at_top5pct": 0.317,
+    "selection_ratio": 1.50
+  },
+  "economic_backtest": {
+    "status": "NOT_OBSERVABLE",
+    "reason": "Target bot buy execution details, exit history, and realized P&L are absent from the supplied dataset."
+  },
+  "test_locked": true
+}

@@ -3,5 +3,5 @@
   "threshold": 0.793,
   "source": "validation_set",
   "test_tuning": false,
-  "model_version": "v1.0.0-final"
+  "model_version": "v1.1.0-final"
 }

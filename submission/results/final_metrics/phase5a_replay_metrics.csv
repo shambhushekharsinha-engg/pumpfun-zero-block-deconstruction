@@ -1,0 +1,10 @@
+,Value
+Total Test Deployments,61673.0
+Target Bot Selections,2924.0
+Replica Selections,4286.0
+Shared (Bot ∩ Replica),1388.0
+Bot-only (Bot − Replica),1536.0
+Replica-only (Replica − Bot),2898.0
+Precision,0.32384507699486703
+Recall,0.4746922024623803
+Selection Ratio,1.4658002735978113

@@ -55,7 +55,7 @@ export function PolicyExplorer() {
               <Zap className="text-blue-400" size={20} /> Hypothetical Deployer
             </h3>
             <p className="text-slate-400 text-sm">
-              Adjust the observable point-in-time features to simulate the target's response.
+              Explore the two dominant observable signals. Other causal-in-time features remain fixed at the reference deployer profile.
             </p>
           </div>
           
@@ -111,11 +111,11 @@ export function PolicyExplorer() {
           <div className="h-16 flex items-center justify-center w-full">
             {isTop5 ? (
               <div className="flex items-center gap-2 text-green-400 font-black tracking-widest text-sm border border-green-500/30 bg-green-500/10 px-6 py-2 rounded-full shadow-[0_0_20px_rgba(34,197,94,0.15)] animate-in fade-in zoom-in duration-300">
-                <ShieldCheck size={18}/> DOMINANT SELECTION REGIME
+                <ShieldCheck size={18}/> HIGH-CONFIDENCE OBSERVABLE REPLICA REGIME
               </div>
             ) : (
               <div className="flex items-center gap-2 text-slate-400 font-bold tracking-widest text-sm border border-slate-700/50 bg-slate-800/30 px-6 py-2 rounded-full animate-in fade-in zoom-in duration-300">
-                <AlertTriangle size={18}/> UNEXPLAINED / IGNORED
+                <AlertTriangle size={18}/> UNEXPLAINED / RESIDUAL REGIME
               </div>
             )}
           </div>
