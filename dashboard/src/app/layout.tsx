@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 
+import { Navigation } from "@/components/Navigation";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -17,22 +19,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${inter.className} bg-slate-950 text-slate-100 min-h-screen flex flex-col`}>
-        {/* PREMIUM NAVIGATION */}
-        <header className="border-b border-slate-800/50 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50">
-          <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-            <Link href="/" className="font-bold tracking-tight text-white flex items-center gap-2">
-              <div className="w-4 h-4 bg-blue-500 rounded-sm"></div>
-              ZERO-BLOCK DECONSTRUCTION
-            </Link>
-            <nav className="hidden md:flex gap-8 text-sm font-medium text-slate-400">
-              <Link href="/methodology" className="hover:text-white transition">Methodology</Link>
-              <Link href="/fingerprint" className="hover:text-white transition">Fingerprint</Link>
-              <Link href="/interpretability" className="hover:text-white transition">Interpretability</Link>
-              <Link href="/reproduction" className="hover:text-white transition">Reproduction</Link>
-            </nav>
-          </div>
-        </header>
+      <body className={`${inter.className} bg-slate-950 text-slate-100 min-h-screen flex flex-col relative`}>
+        {/* AMBIENT BACKGROUND GLOWS */}
+        <div className="fixed inset-0 overflow-hidden pointer-events-none z-[-1]">
+          <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-blue-900/20 blur-[120px]"></div>
+          <div className="absolute top-[40%] -right-[10%] w-[40%] h-[60%] rounded-full bg-indigo-900/10 blur-[120px]"></div>
+        </div>
+
+        <Navigation />
 
         {/* MAIN CONTENT */}
         <div className="flex-1">
