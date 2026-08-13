@@ -1,7 +1,29 @@
 <div align="center">
-  <h1>🎯 Solana Sniper Bot:<br>Reverse-Engineering a Behavioral Fingerprint</h1>
-  <p><strong>Deconstructing on-chain behavior through observable historical data</strong></p>
+<pre>
+┌─────────────────────────────────────────────────────────┐
+│ SOLANA SNIPER — BEHAVIORAL DECONSTRUCTION               │
+│                                                         │
+│ 411,137 deployments        13,818 mapped positives      │
+│                                                         │
+│             0% unseen-deployer overlap                  │
+│                                                         │
+│ PR-AUC             UNSEEN PR-AUC         BOT CAPTURE    │
+│ 0.286              0.396                 47.8%          │
+│                                                         │
+│ PRECISION          SELECTION RATIO                      │
+│ 31.7%              1.50×                                │
+└─────────────────────────────────────────────────────────┘
+</pre>
   
+  <h3>Dominant fingerprint:<br>
+  LOW PRIOR LAUNCH HISTORY + NON-TRIVIAL DEPLOYER AGE</h3>
+
+  <p><strong>Can we reconstruct the dominant observable decision policy of a Solana sniper using only point-in-time on-chain evidence—without fabricating execution or economic outcomes?</strong></p>
+  
+  <blockquote>
+    <p><strong>Important:</strong> This is a behavioral reconstruction, not a claim of complete economic replication. The supplied dataset does not expose the bot's complete buy/exit execution history. We explicitly distinguish absence of evidence from negative evidence.</p>
+  </blockquote>
+
   <p>
     <a href="https://github.com/shambhushekharsinha-engg/pumpfun-zero-block-deconstruction/actions"><img alt="Build Status" src="https://img.shields.io/badge/build-passing-brightgreen"></a>
     <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
@@ -10,74 +32,95 @@
 
 ---
 
-## 🔍 The Mystery
-Can we reverse-engineer a highly profitable Solana sniper bot using only the deployment and deployer activity exposed by the blockchain, without relying on fabricated economic P&L?
+## 🔒 Leakage Firewall & Unknown-Label Handling
 
-This project successfully reconstructed a **generalizable, leakage-safe behavioral fingerprint** of the target Solana sniper from observable competition data. We proved that the discovered policy generalizes to unseen deployers, quantified the unexplained residual regime, and demonstrated efficient behavioral replication.
+We strictly enforced a chronological isolation boundary. All features are aggregated at $t_{decision}$ strictly using data from $t < t_{decision}$.
 
----
+```mermaid
+graph TD
+    A[RAW ACTIVITY] --> B[t_decision]
+    B --> C{event_time < t_decision ?}
+    C -->|YES| D[ALLOWED DATA]
+    C -->|NO| E[REJECTED DATA]
+    D --> F[CAUSAL FEATURES]
+    F --> G[MODEL INPUT]
+```
+*Leakage Tests Passed: Layer A (source-event timestamp) | Layer B (aggregate construction) | Layer C (adversarial future feature)*
 
-## 🔬 Core Discoveries & Scoreboard
-
-We enforced a strict chronological isolation boundary to completely eliminate lookahead leakage. All features were aggregated at $t_{decision}$ strictly using data from $t < t_{decision}$.
-
-| Finding | Result |
-|---------|--------|
-| **Deployment Universe** | 411,137 |
-| **Target Positives Mapped** | 13,818 |
-| **Unseen Test Deployers Overlap** | 0% |
-| **Full Model PR-AUC** | 0.286 |
-| **Unseen-deployer PR-AUC** | 0.396 |
-| **Frozen-test Bot Capture (Recall)** | **47.8%** |
-| **Frozen-test Precision** | **31.7%** |
-| **Frozen-test Selection Ratio** | **1.50×** |
-| **Primary Decision Signal** | Deployer history (`past_launches`) |
-| **Economic P&L** | Not observable (Not fabricated) |
-
----
-
-## 🧠 The Three-Layer Reverse-Engineering Story
-
-### Layer 1: The Dominant Fingerprint
-By ablating feature families and analyzing SHAP global dependencies, we discovered the primary sniper decision boundary:
-> **Low launch history + Non-trivial wallet age $\rightarrow$ High Selection Likelihood**
-
-The bot systematically hunts for relatively mature wallets (not brand new burners) that have an exceptionally low count of past launches. It almost completely ignores deployment mechanics like base fees or token supply.
-
-### Layer 2: Executable Replication
-The fingerprint isn't just descriptive; it is executable. Applying our model-derived rule to a frozen chronological test set yielded a **47.8% target-bot capture**. The model successfully scores and ranks candidate deployments, showing a monotonic relationship between our predicted probability and the actual bot selection rate.
-
-### Layer 3: Residual Intelligence & Disagreement
-We mapped out a rigorous counterfactual disagreement matrix:
-
-| | Replica Reject | Replica Select |
-|---|---|---|
-| **Bot Reject** | 55,851 (TN) | 2,898 (Replica-only) |
-| **Bot Select** | **1,536 (Bot-only)** | **1,388 (Shared)** |
-
-The replica perfectly captures the dominant low-volume regime (1,388 shared), but rejects a secondary target-bot regime of extreme serial deployers (1,536 Bot-only). The dataset allows reconstruction of the dominant observable regime, but does not provide sufficient evidence to identify the target bot's complete decision function.
+### Handling the Unknown Positives
+Of the original target selections, 2,109 could not be mapped to the launch universe.
+```mermaid
+graph LR
+    A[15,927 Target Selections] --> B[13,818 Mapped → LABEL = 1]
+    A --> C[2,109 Unknown → EXCLUDED]
+```
+> **Unknown ≠ Negative.** This is an absolute scientific integrity rule.
 
 ---
 
-## 📈 Beat It: Behavioral Efficiency Without Fabricated Economics
+## 🔬 Core Discoveries & Baseline Comparison
 
-Because exact execution and exit data are absent from the dataset, we refused to manufacture synthetic economic results. Instead, we optimized for **behavioral selection efficiency**.
+Because positive prevalence is only ~4.7%, precision-recall evaluation is far more informative than accuracy.
 
-Under a pre-registered **Top-5% operating policy** evaluated on the frozen test set, our Replica captured nearly half of the target bot's selections while operating on only **1.50×** the target's candidate selection volume. 
+<pre>
+Random prevalence     ≈ 4.7%
+PR-AUC Random baseline  ─── 0.047
+Full model              ─── 0.286
+Unseen deployers        ─── 0.396
+</pre>
+
+The behavioral signal remained predictive on a strictly unseen-deployer cohort, achieving PR-AUC 0.396. This proves the model discovers a generalized rule rather than memorizing identities.
+
+---
+
+## 📈 Behavioral Efficiency: Capturing the Target Without Fabricated Economics
+
+We do not claim economic outperformance because the supplied dataset does not expose the required execution and exit information. Instead, we optimized for **behavioral selection efficiency**.
+
+Under a pre-registered **Top-5% operating policy** evaluated on the frozen test set, our Replica achieved:
+- **47.8% target-selection recall**
+- **31.7% precision**
+- **1.50× selection ratio**
+
+---
+
+## 🧩 Failure Analysis: The Residual Regime
+
+Where does the replica fail? The observable feature space explains the dominant regime (Shared), but not the complete target policy (Bot-only).
+
+<pre>
+Dominant Regime (Shared)        → past_launches ≈ low
+Residual Regime (Bot-only)      → past_launches ≈ very high
+</pre>
+
+The target bot contains a secondary regime comprising 1,536 selections characterized by extreme serial deployers.
+
+| Explanation | Evidence | Status |
+|-------------|----------|--------|
+| Missing wallet relationships | Plausible | Hypothesis |
+| Missing metadata | Plausible | Hypothesis |
+| Off-chain signals | Possible | Unverified |
+| Capital/availability constraints| Possible | Unverified |
+| Random residual | Not established | Unknown |
+
+*Off-chain metadata is one plausible explanation, but the supplied dataset does not allow this hypothesis to be tested.*
 
 ---
 
 ## 📂 Repository Structure
 ```text
 .
+├── .github/ workflows/     # CI/CD pipelines
 ├── submission/
 │   ├── notebook/           # The final Kaggle showcase Jupyter Notebook
-│   ├── results/            # Frozen metrics, tables, and generated figures
+│   ├── results/            # Frozen experiment manifest, metrics, tables, figures
 │   ├── src/                # Modularized causal feature engine and ML pipeline
+│   ├── tests/              # Strict reproducibility and leakage tests
 │   ├── Kaggle_Writeup.md   # The detailed scientific narrative
-│   ├── REPRODUCTION_CONTRACT.md # The strict rules of engagement
-│   └── requirements.txt    # Frozen dependency versions
-├── data/                   # (Ignored) Raw datasets and processed parquet files
+│   ├── OBSERVABILITY.md    # What we can/cannot observe
+│   ├── FINAL_RESULTS.md    # The frozen scoreboard
+│   └── REPRODUCTION_CONTRACT.md # The strict rules of engagement
+├── DATA_DICTIONARY.md      # Schema documentation
 └── LICENSE                 # MIT License
 ```
 
