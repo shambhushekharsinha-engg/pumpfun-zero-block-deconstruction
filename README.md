@@ -99,7 +99,7 @@ Leakage is eliminated at three independent layers:
 
 SHAP analysis of the frozen model reveals the bot's observable selection signal:
 
-1. **Low prior launch count** — Fresh deployers are strongly preferred. High serial deployment history degrades probability severely.
+1. **Low-history deployers are strongly favored, provided the wallet is not extremely new** — Fresh deployers with some on-chain aging dominate the signal. High serial deployment history degrades probability severely, and brand-new wallets (zero age) are equally disfavored.
 2. **Non-trivial wallet age** — New wallets introduce noise. Aged wallets amplify the signal.
 
 Jito bundle status, social link presence, and economic execution details are **not available** in the relevant dataset for the target bot's buy transactions.
@@ -111,8 +111,8 @@ Jito bundle status, social link presence, and economic execution details are **n
 The LightGBM ensemble is transpiled into a **pure Python AST** via `m2cgen` and deployed as a Vercel Serverless Function:
 
 - **Zero dependencies** on server (no pandas, numpy, lightgbm, scikit-learn)
-- **Sub-20ms cold starts** on Vercel Edge
-- **100% classification equivalence** verified by CI Golden Inference Test
+- **Designed for lightweight serverless inference** with no ML runtime dependencies
+- **100% classification equivalence** to frozen golden inference vectors, verified by CI
 
 ---
 

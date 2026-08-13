@@ -85,3 +85,50 @@ def test_unknown_label_protection():
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
+
+def test_manifest_dashboard_synchronization():
+    """
+    Ensures the dashboard's threshold.json and feature_schema.json are
+    synchronized with the canonical experiment_manifest.json.
+    This prevents the two copies of truth from silently diverging.
+    """
+    model_dir = Path(__file__).resolve().parent.parent.parent / "model"
+    manifest_path = Path(__file__).resolve().parent.parent.parent.parent / "submission" / "results" / "experiment_manifest.json"
+
+    if not manifest_path.exists():
+        pytest.skip("experiment_manifest.json not found")
+
+    with open(manifest_path) as f:
+        manifest = json.load(f)
+
+    # Gate 1: Threshold must match
+    with open(model_dir / "threshold.json") as f:
+        threshold_data = json.load(f)
+    manifest_threshold = manifest["policy"]["threshold"]
+    dashboard_threshold = threshold_data["threshold"]
+    assert dashboard_threshold == manifest_threshold, (
+        f"Threshold divergence: dashboard={dashboard_threshold} "
+        f"!= manifest={manifest_threshold}"
+    )
+
+    # Gate 2: Feature order must match
+    with open(model_dir / "feature_schema.json") as f:
+        schema_data = json.load(f)
+    manifest_features = manifest["features"]
+    dashboard_features = schema_data["features"]
+    assert dashboard_features == manifest_features, (
+        f"Feature schema divergence:\n"
+        f"  dashboard: {dashboard_features}\n"
+        f"  manifest:  {manifest_features}"
+    )
+
+    # Gate 3: Version must be v1.1.0-final in manifest
+    assert manifest["experiment_version"] == "v1.1.0-final", (
+        f"Manifest version mismatch: {manifest['experiment_version']}"
+    )
+
+    print(
+        f"Manifest-Dashboard sync: PASS\n"
+        f"  threshold={dashboard_threshold}, features={dashboard_features}, "
+        f"version={manifest['experiment_version']}"
+    )

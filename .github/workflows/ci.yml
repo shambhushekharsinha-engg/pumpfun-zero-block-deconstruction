@@ -67,7 +67,7 @@ jobs:
         run: npm ci
 
       - name: Run ESLint
-        run: npm run lint || true
+        run: npm run lint
 
       - name: Build production bundle
         run: npm run build
@@ -113,16 +113,34 @@ jobs:
             echo "Honesty scan PASSED — no forbidden claims found."
           fi
 
-      - name: Scan for absolute paths and secrets
+      - name: Scan for secrets and absolute paths
         run: |
-          echo "=== Scanning for absolute paths and secrets ==="
+          echo "=== Scanning for secrets and hardcoded paths ==="
           FAILED=0
-          EXCLUDE_DIRS="--exclude-dir=.git --exclude-dir=node_modules --exclude-dir=.next --exclude-dir=archive"
-          SECRET_PATTERNS=("API_KEY" "SECRET_KEY" "PRIVATE_KEY" "C:\\\\\\\\Users" "/home/" "/Users/")
-          for pattern in "${SECRET_PATTERNS[@]}"; do
+          EXCLUDE_DIRS="--exclude-dir=.git --exclude-dir=node_modules --exclude-dir=.next --exclude-dir=archive --exclude-dir=.github"
+          # Targeted secret patterns (key=value assignment format to avoid doc false-positives)
+          SECRET_PATTERNS=(
+            "SECRET_KEY="
+            "PRIVATE_KEY=" 
+            "API_KEY=sk-"
+            "API_KEY=eyJ"
+          )
+          # Absolute path patterns (genuine hardcoded paths)
+          PATH_PATTERNS=(
+            "C:\\Users\\"
+            "/home/runner/work"
+          )
+          for pattern in "${SECRET_PATTERNS[@]}" "${PATH_PATTERNS[@]}"; do
             results=$(grep -rI $EXCLUDE_DIRS -l "$pattern" . 2>/dev/null || true)
             if [ -n "$results" ]; then
-              echo "WARNING: Pattern '$pattern' found in: $results"
+              echo "FAIL: Secret or hardcoded path '$pattern' found in:"
+              echo "$results"
+              FAILED=1
             fi
           done
-          echo "Secrets scan complete."
+          if [ $FAILED -eq 1 ]; then
+            echo "Secrets scan FAILED."
+            exit 1
+          else
+            echo "Secrets scan PASSED — no secrets or hardcoded paths found."
+          fi
