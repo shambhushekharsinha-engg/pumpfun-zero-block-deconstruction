@@ -1,0 +1,9 @@
+{
+  "features": [
+    "past_launches",
+    "past_buys",
+    "past_sells",
+    "past_burns",
+    "deployer_age_seconds"
+  ]
+}
