@@ -1,0 +1,3 @@
+# Empty requirements file to override the root requirements.txt
+# This ensures Vercel's Python runtime does not attempt to install
+# heavy ML libraries (like SHAP or LightGBM) that fail on Vercel.
