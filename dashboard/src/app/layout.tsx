@@ -12,6 +12,12 @@ export const metadata: Metadata = {
   description: "Interactive research artifact reconstructing a Solana sniper's observable decision policy.",
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -42,7 +48,7 @@ export default function RootLayout({
               <span className="hidden md:inline">|</span>
               <span className="hidden md:inline">Features: 5</span>
               <span className="hidden md:inline">|</span>
-              <span className="hidden md:inline flex items-center gap-1">CI: <div className="w-2 h-2 bg-green-500 rounded-full"></div> PASS</span>
+              <div className="hidden md:flex items-center gap-1">CI: <div className="w-2 h-2 bg-green-500 rounded-full"></div> PASS</div>
             </div>
             <div className="flex gap-6 font-medium">
               <Link href="/methodology" className="hover:text-slate-300 transition">Methodology</Link>
