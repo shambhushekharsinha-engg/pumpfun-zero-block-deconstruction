@@ -1,6 +1,6 @@
 # 🌌 Zero-Block Deconstruction: Comprehensive Scientific Writeup
 
-*An exhaustive analysis of the on-chain behavioral reconstruction of a dominant Solana sniper bot.*
+*Reconstructing a Solana sniper bot's decision policy using causal-in-time features, LightGBM, and zero-dependency serverless inference.*
 
 ---
 
@@ -165,7 +165,7 @@ Additional data required to bridge this gap:
 
 To prove the execution validity of our findings, we engineered a **dependency-free serverless inference pipeline**. Using the `m2cgen` library, we transpiled the trained LightGBM ensemble tree structures directly into a raw Abstract Syntax Tree (AST), which was then compiled into pure, native Python code.
 
-This allows the model to run without heavy dependencies (`pandas`, `numpy`, `lightgbm`), deployed directly to Vercel Serverless Functions. During the GitHub Actions build step, the raw Python AST model must score a "Golden Inference Vector" of 10,000 predictions with **100.00% floating-point equivalence** to the LightGBM baseline before the build is allowed to pass.
+This allows the model to run without heavy dependencies (`pandas`, `numpy`, `lightgbm`), deployed directly to Vercel Serverless Functions. CI verifies the transpiled scorer against 10,000 frozen inference vectors with a maximum absolute probability error below the configured tolerance and 100% classification agreement.
 
 ---
 
@@ -210,4 +210,10 @@ The supplied competition archive did not contain the target bot's executable buy
 
 This submission optimizes for evidentiary validity rather than completeness: every reported result is supported by the supplied data, while every unobservable quantity is explicitly left unclaimed. Where the rubric requests post-deployment economic measurements, we identify the missing evidence explicitly rather than replacing it with synthetic results presented as competition outcomes.
 
-*(End of Comprehensive Writeup)*
+---
+
+*🔗 **GitHub:** [pumpfun-zero-block-deconstruction](https://github.com/shambhushekharsinha-engg/pumpfun-zero-block-deconstruction)*
+*The complete open-source codebase including the causal-in-time feature engineering pipeline, frozen model evaluation artifacts, dashboard inference layer, and scientific testing suites.*
+
+*🌐 **Live Demo:** [Vercel Dashboard](https://pumpfun-zero-block-deconstruction.vercel.app/)*
+*📺 **Video:** [YouTube Walkthrough](https://youtu.be/c9CdFHTLMJM)*
