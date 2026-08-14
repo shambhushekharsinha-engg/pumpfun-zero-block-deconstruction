@@ -172,6 +172,34 @@ The interactive Policy Explorer allows real-time exploration of the frozen model
 
 ---
 
+## 📸 Application Gallery
+
+<details>
+<summary><b>Click to expand and view screenshots of the dashboard</b></summary>
+<br/>
+
+<div align="center">
+  <img src="project_demo/screenshots/Screenshot%202026-08-14%20020349.png" width="48%" />
+  <img src="project_demo/screenshots/Screenshot%202026-08-14%20020404.png" width="48%" />
+  <img src="project_demo/screenshots/Screenshot%202026-08-14%20020411.png" width="48%" />
+  <img src="project_demo/screenshots/Screenshot%202026-08-14%20020425.png" width="48%" />
+  <img src="project_demo/screenshots/Screenshot%202026-08-14%20020436.png" width="48%" />
+  <img src="project_demo/screenshots/Screenshot%202026-08-14%20020443.png" width="48%" />
+  <img src="project_demo/screenshots/Screenshot%202026-08-14%20020451.png" width="48%" />
+  <img src="project_demo/screenshots/Screenshot%202026-08-14%20020457.png" width="48%" />
+  <img src="project_demo/screenshots/Screenshot%202026-08-14%20020509.png" width="48%" />
+  <img src="project_demo/screenshots/Screenshot%202026-08-14%20020516.png" width="48%" />
+  <img src="project_demo/screenshots/Screenshot%202026-08-14%20020525.png" width="48%" />
+  <img src="project_demo/screenshots/Screenshot%202026-08-14%20020532.png" width="48%" />
+  <img src="project_demo/screenshots/Screenshot%202026-08-14%20020548.png" width="48%" />
+  <img src="project_demo/screenshots/Screenshot%202026-08-14%20020556.png" width="48%" />
+  <img src="project_demo/screenshots/Screenshot%202026-08-14%20023012.png" width="48%" />
+</div>
+
+</details>
+
+---
+
 ## 🔁 Reproduction
 
 ### 1. Dashboard (Next.js + Python API)
