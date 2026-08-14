@@ -16,22 +16,9 @@ def main():
         print(f"Loaded {len(deployments)} deployments and {len(bot_trades)} bot trades.")
     except Exception as e:
         print("Error loading data:", e)
-        print("Using mock data.")
-        deployments = pd.DataFrame({
-            'timestamp': [1700000000 + i*3600 for i in range(1000)],
-            'deployer': [f'0x{i%10}' for i in range(1000)],
-            'mint': [f'm{i}' for i in range(1000)],
-            'priority_fee': [i*0.01 for i in range(1000)],
-            'jito_tip': [i*0.001 for i in range(1000)]
-        })
-        bot_trades = pd.DataFrame({
-            'timestamp': [1700000000 + i*3600 + 10 for i in range(300)],
-            'maker': [f'0x{i%10}' for i in range(300)],
-            'mint': [f'm{i*3}' for i in range(300)],
-            'side': ['buy', 'sell']*150
-        })
+        return
 
-    deployments['t_deployment'] = pd.to_datetime(deployments['timestamp'], unit='s', errors='coerce')
+    deployments['t_deployment'] = pd.to_datetime(deployments['created_at'], errors='coerce')
     bot_trades['t_trade'] = pd.to_datetime(bot_trades['timestamp'], unit='s', errors='coerce')
     deployments = deployments.sort_values('t_deployment')
     
@@ -39,7 +26,7 @@ def main():
     
     for idx, row in deployments.iterrows():
         t_decision = row['t_deployment']
-        deployer = row.get('deployer', None)
+        deployer = row.get('deployer_address', None)
         
         past_launches = 0
         past_buys = 0
@@ -53,7 +40,7 @@ def main():
         sells_last_1h = 0
         
         if deployer is not None:
-            past_deps = deployments[(deployments['deployer'] == deployer) & (deployments['t_deployment'] < t_decision)]
+            past_deps = deployments[(deployments['deployer_address'] == deployer) & (deployments['t_deployment'] < t_decision)]
             past_launches = len(past_deps)
             if past_launches > 0:
                 first_launch = past_deps['t_deployment'].min()
@@ -63,18 +50,18 @@ def main():
                 launches_last_24h = len(past_deps[past_deps['t_deployment'] >= (t_decision - pd.Timedelta(hours=24))])
                 time_since_last_activity = time_since_last_launch 
                 
-            if 'maker' in bot_trades.columns:
-                past_trades = bot_trades[(bot_trades['maker'] == deployer) & (bot_trades['t_trade'] < t_decision)]
-                past_buys = len(past_trades[past_trades.get('side', '') == 'buy'])
-                past_sells = len(past_trades[past_trades.get('side', '') == 'sell'])
-                past_burns = len(past_trades[past_trades.get('type', '') == 'burn']) 
+            if 'trader_address' in bot_trades.columns:
+                past_trades = bot_trades[(bot_trades['trader_address'] == deployer) & (bot_trades['t_trade'] < t_decision)]
+                past_buys = len(past_trades[past_trades.get('tx_type', '') == 'buy'])
+                past_sells = len(past_trades[past_trades.get('tx_type', '') == 'sell'])
+                past_burns = 0 
                 
                 if len(past_trades) > 0:
                     last_trade = past_trades['t_trade'].max()
                     time_since_last_trade = (t_decision - last_trade).total_seconds()
                     time_since_last_activity = min(time_since_last_activity, time_since_last_trade)
-                    buys_last_1h = len(past_trades[(past_trades.get('side', '') == 'buy') & (past_trades['t_trade'] >= (t_decision - pd.Timedelta(hours=1)))])
-                    sells_last_1h = len(past_trades[(past_trades.get('side', '') == 'sell') & (past_trades['t_trade'] >= (t_decision - pd.Timedelta(hours=1)))])
+                    buys_last_1h = len(past_trades[(past_trades.get('tx_type', '') == 'buy') & (past_trades['t_trade'] >= (t_decision - pd.Timedelta(hours=1)))])
+                    sells_last_1h = len(past_trades[(past_trades.get('tx_type', '') == 'sell') & (past_trades['t_trade'] >= (t_decision - pd.Timedelta(hours=1)))])
                 
         buy_to_sell_ratio = past_buys / (past_sells + 1)
         sell_to_launch_ratio = past_sells / (past_launches + 1)
@@ -90,12 +77,12 @@ def main():
         if pd.isna(priority_fee): priority_fee = 0
         jito_tip = row.get('jito_tip', 0)
         if pd.isna(jito_tip): jito_tip = 0
-        initial_sol = row.get('initial_sol', 0)
+        initial_sol = row.get('dev_buy_sol', 0)
         if pd.isna(initial_sol): initial_sol = 0
         
         target = 0
-        if 'mint' in row and 'mint' in bot_trades.columns:
-            target = 1 if row['mint'] in bot_trades['mint'].values else 0
+        if 'token_address' in row and 'token_address' in bot_trades.columns:
+            target = 1 if row['token_address'] in bot_trades['token_address'].values else 0
             
         features.append({
             't_deployment': t_decision,

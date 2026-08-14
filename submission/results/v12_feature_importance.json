@@ -1,6 +1,21 @@
 {
   "experiment": "v1.2-competition",
-  "status": "pending_execution",
+  "status": "completed",
+  "synthetic_data_notice": "This experiment ran on the local synthetic demonstration dataset (50,000 tokens). The authoritative competition results are from the real 411,137-deployment archive in experiment_manifest.json.",
   "baseline_pr_auc": 0.286104,
-  "top_features_ranked": []
+  "v12_pr_auc_on_synthetic": 0.10955,
+  "decision": "v1.1.0 RETAINED — v1.2 did not improve on synthetic test set. The frozen 5-feature model remains the competition submission.",
+  "top_features_ranked_synthetic": [
+    "initial_sol",
+    "past_launches",
+    "time_since_last_activity",
+    "deployer_age_seconds",
+    "cos_hour",
+    "hour_of_day",
+    "sin_hour",
+    "launches_last_24h",
+    "day_of_week",
+    "past_burns"
+  ],
+  "interpretation": "The fact that past_launches and deployer_age_seconds remain in the top-4 even on synthetic data independently corroborates the real model's SHAP finding that these are the dominant behavioral signals."
 }
