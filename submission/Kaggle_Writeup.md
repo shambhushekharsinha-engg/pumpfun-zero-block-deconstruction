@@ -166,7 +166,17 @@ This allows the model to run without heavy dependencies (`pandas`, `numpy`, `lig
 
 ---
 
-## 12. Conclusion
+## 12. Data Availability Decision
+
+**Outcome-data gate: NOT AVAILABLE**
+
+The supplied competition archive available to this project did not contain the post-deployment outcome files referenced by the rubric (`pumpfun_trades.parquet`, `mcap_candles.parquet`). Consequently, the corresponding economic metrics (entry size, hold time, exit structure, P&L distribution, ROI, drawdown) are not empirically observable from the supplied assets.
+
+**Decision: No synthetic economics are included in the competition results.** A full audit of which rubric requirements are fulfilled, partially fulfilled, or blocked by missing data is documented in `submission/RUBRIC_COVERAGE.md`.
+
+---
+
+## 13. Conclusion
 
 This submission optimizes for evidentiary validity rather than completeness: every reported result is supported by the supplied data, while every unobservable quantity is explicitly left unclaimed.
 
