@@ -232,7 +232,7 @@ pytest dashboard/tests/ -v
 Operating at the intersection of high-performance web architecture, machine learning, and decentralized finance. Specializes in building rigorous, reproducible data science pipelines and presenting complex findings through interactive, production-grade web interfaces.
 
 - **GitHub**: [@shambhushekharsinha-engg](https://github.com/shambhushekharsinha-engg)
-- **Focus**: ML reproducibility, Next.js, MEV architecture, serverless edge computing
+- **Focus**: ML reproducibility, Next.js, MEV architecture, serverless inference
 
 ---
 
