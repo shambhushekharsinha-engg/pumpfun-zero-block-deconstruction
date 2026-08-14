@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="project_demo/ChatGPT%20Image%20Aug%2013,%202026,%2010_59_05%20PM.png" alt="Zero-Block Deconstruction Logo" width="300"/>
+<img src="project_demo/project_logo.png" alt="Zero-Block Deconstruction Logo" width="300"/>
 
 # 🌌 Zero-Block Deconstruction
 
@@ -181,21 +181,20 @@ The interactive Policy Explorer allows real-time exploration of the frozen model
 <br/>
 
 <div align="center">
-  <img src="project_demo/screenshots/Screenshot%202026-08-14%20020349.png" width="48%" />
-  <img src="project_demo/screenshots/Screenshot%202026-08-14%20020404.png" width="48%" />
-  <img src="project_demo/screenshots/Screenshot%202026-08-14%20020411.png" width="48%" />
-  <img src="project_demo/screenshots/Screenshot%202026-08-14%20020425.png" width="48%" />
-  <img src="project_demo/screenshots/Screenshot%202026-08-14%20020436.png" width="48%" />
-  <img src="project_demo/screenshots/Screenshot%202026-08-14%20020443.png" width="48%" />
-  <img src="project_demo/screenshots/Screenshot%202026-08-14%20020451.png" width="48%" />
-  <img src="project_demo/screenshots/Screenshot%202026-08-14%20020457.png" width="48%" />
-  <img src="project_demo/screenshots/Screenshot%202026-08-14%20020509.png" width="48%" />
-  <img src="project_demo/screenshots/Screenshot%202026-08-14%20020516.png" width="48%" />
-  <img src="project_demo/screenshots/Screenshot%202026-08-14%20020525.png" width="48%" />
-  <img src="project_demo/screenshots/Screenshot%202026-08-14%20020532.png" width="48%" />
-  <img src="project_demo/screenshots/Screenshot%202026-08-14%20020548.png" width="48%" />
-  <img src="project_demo/screenshots/Screenshot%202026-08-14%20020556.png" width="48%" />
-  <img src="project_demo/screenshots/Screenshot%202026-08-14%20023012.png" width="48%" />
+  <img src="project_demo/screenshots/01_dashboard_overview.png" width="48%" />
+  <img src="project_demo/screenshots/02_interactive_policy_explorer.png" width="48%" />
+  <img src="project_demo/screenshots/03_probability_matrix.png" width="48%" />
+  <img src="project_demo/screenshots/04_research_methodology.png" width="48%" />
+  <img src="project_demo/screenshots/05_feature_importance.png" width="48%" />
+  <img src="project_demo/screenshots/06_target_bot_rules.png" width="48%" />
+  <img src="project_demo/screenshots/07_scoreboard_results.png" width="48%" />
+  <img src="project_demo/screenshots/08_generalization_metrics.png" width="48%" />
+  <img src="project_demo/screenshots/09_evidence_boundary.png" width="48%" />
+  <img src="project_demo/screenshots/10_dual_regime_discovery.png" width="48%" />
+  <img src="project_demo/screenshots/11_serverless_architecture.png" width="48%" />
+  <img src="project_demo/screenshots/12_edge_api_endpoint.png" width="48%" />
+  <img src="project_demo/screenshots/13_scientific_integrity.png" width="48%" />
+  <img src="project_demo/screenshots/14_data_dictionary.png" width="48%" />
 </div>
 
 </details>
