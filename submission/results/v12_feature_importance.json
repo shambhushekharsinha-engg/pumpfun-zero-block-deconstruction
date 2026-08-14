@@ -1,14 +1,21 @@
 {
   "experiment": "v1.2-competition",
-  "data_source": "PENDING — script requires real bought_deployers_activity.parquet (626MB)",
+  "data_source": "REAL — bought_deployers_activity.parquet (657MB) + bought_deploy_txs_index.parquet",
   "mock_data_used": false,
   "random_labels_used": false,
-  "status": "NOT_YET_EXECUTED",
-  "note": "v1.2 script is real-schema-valid but has not been run. v1.1.0-final remains the frozen competition baseline. Run submission/src/v12_enhanced_feature_engine.py against the real competition archive to populate this file.",
+  "leakage_violations": 0,
+  "status": "EXECUTED — DATA ARCHITECTURE MISMATCH",
+  "architecture_finding": "bought_deploy_txs_index.parquet contains only the bot's 15,927 selections, not the full 411,137 deployment universe. After filtering deployer != BOT_ADDRESS, positives = 0. The full universe must be reconstructed from activity launch events, which is the architecture used by v1.1.0. v1.2 requires the full universe reconstruction step before it can be evaluated.",
   "baseline_pr_auc": 0.286104,
   "baseline_unseen_pr_auc": 0.396,
+  "baseline_recall": 0.478,
+  "baseline_precision": 0.317,
   "v12_pr_auc": null,
   "v12_unseen_pr_auc": null,
-  "decision": "PENDING — v1.1.0-final is the active competition submission until a real-data v1.2 run completes and passes all gates.",
-  "top_10_features_ranked": []
+  "v12_recall": null,
+  "v12_precision": null,
+  "promotion_gates_passed": false,
+  "decision": "v1.1.0 RETAINED. v1.2 requires full deployment universe reconstruction (411,137 launch events from activity) before evaluation is possible. This is a non-trivial data engineering task that should not be rushed before the submission deadline.",
+  "top_10_features_ranked": [],
+  "next_step_if_time_permits": "Reconstruct full universe from activity.filter(event_type=launch), join bot selections as labels, then re-run v1.2 engine."
 }

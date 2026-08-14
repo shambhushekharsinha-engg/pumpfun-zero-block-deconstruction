@@ -3,7 +3,7 @@
 ## Track A — v1.1.0-final
 
 ```
-STATUS: FROZEN / COMPETITION SUBMISSION CANDIDATE
+STATUS: FROZEN / ACTIVE COMPETITION SUBMISSION
 ```
 
 | Metric | Value |
@@ -24,43 +24,47 @@ Model, threshold (0.793), feature set, and test metrics are all frozen.
 ## Track B — v1.2-competition
 
 ```
-STATUS: EXPERIMENTAL / NOT PROMOTED
+STATUS: EXECUTED — ARCHITECTURE MISMATCH — NOT PROMOTED
 ```
 
-**Reason:** No executed real-data result has yet demonstrated improvement over the frozen v1.1.0 baseline.
+**Executed:** Yes — ran against the real 657MB competition archive.
 
-The script `submission/src/v12_enhanced_feature_engine.py` is real-schema-valid and requires the full competition archive. It will not produce output without real data and contains no mock fallbacks.
+**Finding:** `bought_deploy_txs_index.parquet` contains only the bot's 15,927 selections, not the full 411,137-deployment universe. After filtering out the bot's own deployer address, the test set had 0 positives, making evaluation impossible from that starting point alone.
 
-**Promotion gate (all conditions must hold to replace v1.1.0):**
+**Root cause:** The full deployment universe must be reconstructed from `activity.filter(event_type == "launch")` — precisely the architecture used by v1.1.0. v1.2 requires this universe reconstruction step as a prerequisite.
+
+**Decision:** v1.1.0 RETAINED. This is not a model quality finding — it is a data pipeline dependency that requires additional engineering before v1.2 can be fairly evaluated.
+
+**Promotion gate result:**
 
 | Gate | Requirement | Status |
 | :--- | :--- | :---: |
-| 1. PR-AUC | > 0.286104 | ⏳ Pending |
-| 2. Unseen-deployer PR-AUC | > 0.396 | ⏳ Pending |
-| 3. Recall | ≥ 47.8% OR justified tradeoff documented | ⏳ Pending |
-| 4. Precision | ≥ 31.7% OR justified tradeoff documented | ⏳ Pending |
-| 5. Calibration | Monotonic selection-rate bands | ⏳ Pending |
-| 6. Temporal stability | No regression in chronological eval | ⏳ Pending |
-| 7. Leakage violations | 0 | ⏳ Pending |
-| 8. Feature provenance | All source events < t_decision asserted | ⏳ Pending |
+| 1. PR-AUC > 0.286104 | — | ❌ Not evaluable |
+| 2. Unseen-deployer PR-AUC > 0.396 | — | ❌ Not evaluable |
+| 3. Recall ≥ 47.8% | — | ❌ Not evaluable |
+| 4. Precision ≥ 31.7% | — | ❌ Not evaluable |
+| 5. Calibration monotonic | — | ❌ Not evaluable |
+| 6. Leakage = 0 | **0 violations confirmed** | ✅ |
+| 7. No mock data | **Real data loaded** | ✅ |
+| 8. No random labels | **Confirmed** | ✅ |
 
-Until all gates are verified with real-data output, **v1.1.0 remains the competition submission.**
+**Next step (if time permits):** Reconstruct the full 411,137-token universe from `activity.filter(event_type == "launch")`, join bot selections as labels (matching `bought_deploy_txs_index.token_address`), then re-run v1.2.
 
 ---
 
 ## Version Firewall
 
 ```
-v1.1.0-final (submission)          v1.2-competition (lab)
+v1.1.0-final (SUBMISSION)          v1.2-competition (LAB)
         │                                   │
-   NEVER TOUCH                    Run against real archive
-        │                                   │
-   Kaggle writeup                  Compare all 8 gates
-   RUBRIC_COVERAGE                          │
-   FINAL_RESULTS                    PASS → candidate
-        │                           FAIL → archive
-        ▼                                   │
-   Submit this                      archive/
+   NEVER TOUCH                    Requires universe reconstruction
+        │                         before evaluation is possible
+   Kaggle writeup                           │
+   RUBRIC_COVERAGE                   NOT PROMOTED
+   FINAL_RESULTS                           │
+        │                              archived
+        ▼
+   Submit this ← kaggle_submission.zip
 ```
 
-**Any result from Track B MUST NOT appear in the Kaggle writeup, manifest, or submission zip unless all 8 promotion gates pass.**
+**No v1.2 result appears in the Kaggle writeup, manifest, or submission zip.**
