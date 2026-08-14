@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="project_demo/ChatGPT%20Image%20Aug%2013,%202026,%2010_59_05%20PM.png" alt="Zero-Block Deconstruction Logo" width="300"/>
+
 # 🌌 Zero-Block Deconstruction
 
 **Reconstructing the dominant observable decision policy of a Solana sniper using point-in-time on-chain evidence.**
