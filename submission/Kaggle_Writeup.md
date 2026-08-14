@@ -178,8 +178,6 @@ The supplied competition archive available to this project did not contain the p
 
 ## 13. Conclusion
 
-This submission optimizes for evidentiary validity rather than completeness: every reported result is supported by the supplied data, while every unobservable quantity is explicitly left unclaimed.
-
-We asked whether a real zero-block sniper's decisions could be reconstructed from point-in-time on-chain evidence. From 4.9M wallet events, we built a 411K-deployment universe, excluded 2,109 unresolved labels rather than treating them as negatives, enforced a three-layer leakage firewall, and tested a frozen model chronologically. The resulting replica achieves 0.286 PR-AUC and captures 47.8% of target selections at a 1.50× selection budget, while achieving 0.396 PR-AUC on completely unseen deployers. More importantly, the disagreement analysis exposes a second decision regime that the supplied evidence cannot explain. We don't fabricate the missing economics—we quantify the boundary of what the data can actually prove.
+This submission optimizes for evidentiary validity rather than completeness: every reported result is supported by the supplied data, while every unobservable quantity is explicitly left unclaimed. Where the rubric requests post-deployment economic measurements, we identify the missing evidence explicitly rather than replacing it with synthetic results presented as competition outcomes.
 
 *(End of Comprehensive Writeup)*

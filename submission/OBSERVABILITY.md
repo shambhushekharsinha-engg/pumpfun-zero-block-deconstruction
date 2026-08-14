@@ -1,18 +1,28 @@
-# What We Can and Cannot Observe
+# Observability Manifest — Zero-Block Deconstruction
 
-We explicitly distinguish absence of evidence from negative evidence. Unknown is not negative. Unobservable is not zero. Missing economic evidence is not replaced with synthetic assumptions.
+## Data Availability Gate
 
-| Evidence | Observable? | Used in Replica? |
-|----------|-------------|------------------|
-| Deployment event | ✅ | ✅ |
-| Deployer history | ✅ | ✅ |
-| Historical buys/sells/burns | ✅ | ✅ |
-| Deployer age | ✅ | ✅ |
-| Target bot selection label | ✅* | ✅ |
-| Exact bot buy transaction | ❌ | ❌ |
-| Exact bot latency | ❌ | ❌ |
-| Bot exit transactions | ❌ | ❌ |
-| Realized P&L | ❌ | ❌ |
-| Exact execution slippage | ❌ | ❌ |
+Outcome-data gate: NOT AVAILABLE
 
-*\*Only 13,818 of the 15,927 indexed positives could be mapped to the chronological launch universe.*
+The supplied competition archive did not contain:
+- `pumpfun_trades.parquet` — required for entry size, latency, hold time, P&L
+- `mcap_candles.parquet` — required for market prices and ROI calculation
+
+Decision: No synthetic economics are included in the competition results.
+
+## Observability Matrix
+
+| Metric | Observable? | Reason |
+|:---|:---:|:---|
+| Deployment event timestamps | ✅ Yes | In bought_deploy_txs_index.parquet |
+| Deployer historical activity | ✅ Yes | In bought_deployers_activity.parquet |
+| Bot selection labels | ✅ Yes | In bought_deploy_txs_index.parquet |
+| Point-in-time behavioral features | ✅ Yes | Derived at t_decision |
+| Target bot buy entry size | ❌ No | Bot buy tx details absent |
+| Target bot buy latency (slots) | ❌ No | Bot buy tx absent |
+| Zero-block entry position | ❌ No | Requires full block tx ordering |
+| Bot exit/sell transactions | ❌ No | Not in supplied archive |
+| Hold time per token | ❌ No | No sell data |
+| Per-trade ROI | ❌ No | No execution prices |
+| Realized P&L | ❌ No | No exit prices |
+| Max drawdown | ❌ No | No trade stream |

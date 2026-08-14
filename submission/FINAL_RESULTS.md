@@ -1,30 +1,36 @@
-# Frozen Final Results
+# Final Frozen Results — v1.1.0-final
 
-### Dataset
-411,137 eligible deployments
+> ⚠️ These results are frozen. The model, threshold, and test set are locked.
 
-### Mapped Positives
-13,818
+## Scientific Checkpoint
 
-### Unknown Indexed Positives
-2,109
+| Metric | Value |
+|:---|:---:|
+| Dataset: Total eligible deployments | 411,137 |
+| Dataset: Mapped positive labels | 13,818 |
+| Dataset: Unknown labels excluded | 2,109 |
+| Dataset: Confirmed negative labels | 395,210 |
+| Features | 5 (point-in-time) |
+| Model | LightGBM |
+| Split | Chronological 70/15/15 |
+| Threshold source | Validation set only |
+| Leakage violations | 0 |
+| **Frozen test PR-AUC** | **0.286104** |
+| **Unseen-deployer PR-AUC** | **0.396** |
+| **Bot capture @ Top-5%** | **47.8%** |
+| **Precision @ Top-5%** | **31.7%** |
+| **Selection ratio** | **1.50×** |
+| Fabricated economic assumptions | 0 |
 
-### Test PR-AUC
-0.286104
+## Economic Backtest
 
-### Unseen-Deployer PR-AUC
-0.396
+| Metric | Status |
+|:---|:---:|
+| Entry size | NOT OBSERVABLE |
+| Hold time | NOT OBSERVABLE |
+| Exit structure | NOT OBSERVABLE |
+| P&L distribution | NOT OBSERVABLE |
+| ROI | NOT OBSERVABLE |
+| Max drawdown | NOT OBSERVABLE |
 
-### Top-5% Policy
-
-**Recall:** 47.8%
-
-**Precision:** 31.7%
-
-**Selection Ratio:** 1.50×
-
-### Economic P&L
-**NOT OBSERVABLE**
-
----
-*These results are frozen. Diagnostic analyses must not modify the registered evaluation protocol.*
+Reason: The supplied competition archive did not contain pumpfun_trades.parquet or mcap_candles.parquet.

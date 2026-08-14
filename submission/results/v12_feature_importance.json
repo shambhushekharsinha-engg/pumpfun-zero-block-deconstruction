@@ -1,0 +1,6 @@
+{
+  "experiment": "v1.2-competition",
+  "status": "pending_execution",
+  "baseline_pr_auc": 0.286104,
+  "top_features_ranked": []
+}
