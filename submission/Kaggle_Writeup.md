@@ -23,8 +23,10 @@ The resulting replica achieves 0.286 PR-AUC and captures 47.8% of target selecti
 | Unknown labels excluded | 2,109 |
 | Leakage violations | 0 |
 | Unseen-deployer PR-AUC | 0.396 |
-| Frozen test PR-AUC | 0.286 |
-| Bot capture @ Top-5% | 47.8% |
+| Frozen test PR-AUC | 0.286104 |
+| Bot capture @ Top-5% (Recall) | 47.8% |
+| Precision @ Top-5% | 31.7% |
+| **F1 @ Top-5%** | **0.381** |
 | Selection ratio | 1.50× |
 | **Fabricated economic assumptions** | **0** |
 
@@ -43,7 +45,7 @@ We possess complete visibility into:
 
 **The Unobservable Universe**
 We explicitly acknowledge that we cannot observe:
-- **Bot Buy Latency:** We know the bot bought in the zero-block, but we do not know its exact mempool propagation latency.
+- **Bot Buy Latency:** The competition context identifies zero-block selection as the target behaviour, but the supplied archive does not expose the target buy transaction's exact block position or propagation latency.
 - **Entry Size and Slippage:** The exact amount of SOL deployed per trade and the slippage incurred during execution.
 - **Exit Timing and P&L:** The bot's sell transactions, hold duration, and realized/unrealized profit and loss.
 - **Off-Chain Signals:** Any social media scraping (e.g., Twitter, Telegram) or private node RPC metadata the bot might use.
@@ -77,10 +79,10 @@ Because the bot operates at $t_{decision}$ (the zero-block), the feature enginee
 
 We implemented three layers of leakage prevention:
 1. **Event Filtering:** When aggregating a deployer's historical trades or launches, the database join requires `timestamp < t_deployment`. Strict inequality ensures the current token launch is never accidentally included in the deployer's history.
-2. **Exclusion of Price Action:** Because the bot buys in the zero-block, there is no bonding curve or price action available at $t_{decision}$. All price features from subsequent trades were explicitly banned from the feature engine.
-3. **Mempool Payload Data:** Data extracted directly from the deployment payload (e.g., priority fees paid by the deployer, initial SOL bonded) is permissible, as the bot can observe this in the mempool or Jito bundle prior to execution.
+2. **Exclusion of Price Action:** Because the bot decides in the zero-block, there is no bonding curve or price action available at $t_{decision}$. All post-trade price fields were explicitly banned from the feature engine.
+3. **Deployment-Time Fields:** Deployment payload fields present in the supplied transaction data are eligible for point-in-time feature analysis, as they are available at or before the deployment event itself.
 
-Using this firewall, we engineered five point-in-time behavioral features summarizing a deployer's on-chain identity up to the exact millisecond before they launch a new token (`past_launches`, `past_buys`, `past_sells`, `past_burns`, `deployer_age_seconds`).
+Using this firewall, we engineered five point-in-time behavioral features summarizing a deployer's on-chain identity up to the **latest observable event strictly before `t_decision`** (`past_launches`, `past_buys`, `past_sells`, `past_burns`, `deployer_age_seconds`).
 
 ---
 
@@ -90,7 +92,7 @@ To model the bot's decision boundary, we selected LightGBM (Light Gradient Boost
 
 Once the model was trained, we applied SHAP (SHapley Additive exPlanations) to crack open the "black box" and read the exact policy the bot was utilizing.
 
-The observable model-derived fingerprint favors low-history deployers that are not extremely new, with `past_launches` and `deployer_age_seconds` dominating the available feature set. The model systematically avoids serial rug-pullers (high `past_launches`) and sybil-attack fresh wallets (zero `deployer_age`).
+The observable model-derived fingerprint favours low-history deployers that are not extremely new, with `past_launches` and `deployer_age_seconds` dominating the available feature set. The model strongly down-ranks high-history serial deployers and brand-new zero-history wallets.
 
 ---
 
@@ -99,10 +101,10 @@ The observable model-derived fingerprint favors low-history deployers that are n
 The most rigorous test of a behavioral model is evaluating it on entities it has never seen before. We filtered the test set to include *only* deployers who never appeared in the training set (0% overlap). 
 
 - **Random Baseline PR-AUC:** 0.047
-- **Frozen Model PR-AUC:** 0.286
-- **Unseen Deployers PR-AUC:** **0.396**
+- **Frozen Model PR-AUC:** 0.286104
+- **Unseen Deployers PR-AUC:** **0.396** (versus the 0.047 test-set prevalence baseline)
 
-The higher unseen-deployer PR-AUC provides strong evidence that the signal is not primarily dependent on memorized deployer identity.
+The higher unseen-deployer PR-AUC provides strong evidence that the signal is not primarily dependent on memorised deployer identity. The model has learned transferable structural patterns about deployer behaviour rather than a lookup table of known wallets.
 
 ---
 
@@ -111,10 +113,11 @@ The higher unseen-deployer PR-AUC provides strong evidence that the signal is no
 On the validation set, we established a strict "Top-5% selection budget" policy threshold. We took this pre-registered operating point and applied it blindly to the frozen test set.
 
 - **Target Bot Capture (Recall):** The replica successfully captured **47.8%** of the exact tokens the target bot bought in the future timeframe.
-- **Precision:** Of all the tokens the replica flagged as a "Buy", 31.7% were actually bought by the target bot.
-- **Selection Ratio:** The replica achieved this capture rate while only selecting 1.50× the number of tokens the bot selected. 
+- **Precision:** Of all the tokens the replica flagged as a "Buy", **31.7%** were actually bought by the target bot.
+- **F1 Score:** **0.381** — the harmonic mean of precision and recall at the pre-registered operating point.
+- **Selection Ratio:** The replica achieved this capture rate while only selecting 1.50× the number of tokens the bot selected.
 
-This confirms that the model's score is not an arbitrary classifier output, but a highly calibrated behavioral fingerprint that isolates the bot's preferred targets efficiently.
+This confirms that the model's score is a strong behavioural ranking signal. Selection frequency rises monotonically across probability bands, supporting the score's usefulness for policy ranking rather than arbitrary classification.
 
 ---
 
@@ -197,13 +200,13 @@ This allows the model to run without heavy dependencies (`pandas`, `numpy`, `lig
 
 **Outcome-data gate: NOT AVAILABLE**
 
-The supplied competition archive available to this project did not contain the post-deployment outcome files referenced by the rubric (`pumpfun_trades.parquet`, `mcap_candles.parquet`). Consequently, the corresponding economic metrics (entry size, hold time, exit structure, P&L distribution, ROI, drawdown) are not empirically observable from the supplied assets.
+The supplied competition archive did not contain the target bot's executable buy transaction details, nor the post-deployment outcome files (`pumpfun_trades.parquet`, `mcap_candles.parquet`) required for economic evaluation. Consequently, entry size, hold time, exit structure, P&L distribution, ROI, and drawdown are not empirically observable from the supplied assets.
 
 **Decision: No synthetic economics are included in the competition results.** A full audit of which rubric requirements are fulfilled, partially fulfilled, or blocked by missing data is documented in `submission/RUBRIC_COVERAGE.md`.
 
 ---
 
-## 13. Conclusion
+## 15. Conclusion
 
 This submission optimizes for evidentiary validity rather than completeness: every reported result is supported by the supplied data, while every unobservable quantity is explicitly left unclaimed. Where the rubric requests post-deployment economic measurements, we identify the missing evidence explicitly rather than replacing it with synthetic results presented as competition outcomes.
 
