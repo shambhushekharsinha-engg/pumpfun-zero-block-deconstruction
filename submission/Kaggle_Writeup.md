@@ -166,7 +166,34 @@ This allows the model to run without heavy dependencies (`pandas`, `numpy`, `lig
 
 ---
 
-## 12. Data Availability Decision
+## 12. Rule Confidence Matrix
+
+| Rule | Evidence Source | Confidence |
+| :--- | :--- | :---: |
+| Very low `past_launches` strongly favored | SHAP + ablation + cohort analysis | **High** |
+| Brand-new wallets (`deployer_age` ≈ 0) disfavored | Decision tree + SHAP dependence plot | **High** |
+| Serial deployers disfavored in primary regime | Cohort analysis + SHAP | **High** |
+| Deployment fees contribute little | Ablation | Medium |
+| Secondary regime depends on missing information | Residual analysis | Medium |
+| Social/off-chain signals explain residual regime | Hypothesis only — unavailable evidence | **Low** |
+
+---
+
+## 13. Could Our Result Be an Artifact?
+
+| Threat | Mitigation | Verified |
+| :--- | :--- | :---: |
+| Identity memorisation | Unseen-deployer evaluation (0% training overlap) | ✅ |
+| Temporal leakage | Three-layer leakage firewall + CI gate | ✅ |
+| Unknowns treated as negatives | 2,109 unresolved excluded entirely | ✅ |
+| Test-set threshold tuning | Threshold fixed on validation set only | ✅ |
+| Synthetic economics presented as real | Zero fabricated assumptions | ✅ |
+| Score miscalibration | Selection rate rises monotonically with predicted probability | ✅ |
+| Residual regime ignored | Explicitly analysed as two-regime discovery | ✅ |
+
+---
+
+## 14. Data Availability Decision
 
 **Outcome-data gate: NOT AVAILABLE**
 

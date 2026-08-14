@@ -1,21 +1,14 @@
 {
   "experiment": "v1.2-competition",
-  "status": "completed",
-  "synthetic_data_notice": "This experiment ran on the local synthetic demonstration dataset (50,000 tokens). The authoritative competition results are from the real 411,137-deployment archive in experiment_manifest.json.",
+  "data_source": "PENDING — script requires real bought_deployers_activity.parquet (626MB)",
+  "mock_data_used": false,
+  "random_labels_used": false,
+  "status": "NOT_YET_EXECUTED",
+  "note": "v1.2 script is real-schema-valid but has not been run. v1.1.0-final remains the frozen competition baseline. Run submission/src/v12_enhanced_feature_engine.py against the real competition archive to populate this file.",
   "baseline_pr_auc": 0.286104,
-  "v12_pr_auc_on_synthetic": 0.10955,
-  "decision": "v1.1.0 RETAINED — v1.2 did not improve on synthetic test set. The frozen 5-feature model remains the competition submission.",
-  "top_features_ranked_synthetic": [
-    "initial_sol",
-    "past_launches",
-    "time_since_last_activity",
-    "deployer_age_seconds",
-    "cos_hour",
-    "hour_of_day",
-    "sin_hour",
-    "launches_last_24h",
-    "day_of_week",
-    "past_burns"
-  ],
-  "interpretation": "The fact that past_launches and deployer_age_seconds remain in the top-4 even on synthetic data independently corroborates the real model's SHAP finding that these are the dominant behavioral signals."
+  "baseline_unseen_pr_auc": 0.396,
+  "v12_pr_auc": null,
+  "v12_unseen_pr_auc": null,
+  "decision": "PENDING — v1.1.0-final is the active competition submission until a real-data v1.2 run completes and passes all gates.",
+  "top_10_features_ranked": []
 }
